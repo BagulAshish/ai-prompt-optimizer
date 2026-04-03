@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+      <UserSecretsId>ac40c18a-12c4-4975-81e0-9b2a52b28c35</UserSecretsId>
+  </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AiPromptOptimizer.Application\AiPromptOptimizer.Application.csproj" />
+      <ProjectReference Include="..\AiPromptOptimizer.Infrastructure\AiPromptOptimizer.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>

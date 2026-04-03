@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+      <UserSecretsId>a31ac40c-aed5-4bfe-bc37-f2630d75dfe7</UserSecretsId>
+  </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AiPromptOptimizer.Domain\AiPromptOptimizer.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.GenAI" Version="1.6.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.5" />
+    </ItemGroup>
+
+</Project>
