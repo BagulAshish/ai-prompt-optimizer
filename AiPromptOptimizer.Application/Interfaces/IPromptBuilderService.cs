@@ -1,8 +1,10 @@
-﻿using AiPromptOptimizer.Application.DTOs.Prompt;
+﻿using AiPromptOptimizer.Application.DTOs;
 
 namespace AiPromptOptimizer.Application.Interfaces;
 
 public interface IPromptBuilderService
 {
-    string BuildPrompt(PromptRequest request);
+    string BuildInitialPrompt(ChatRequest request);
+
+    string BuildRefinementPrompt(ChatRequest request);
 }

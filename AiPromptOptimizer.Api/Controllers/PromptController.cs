@@ -1,4 +1,4 @@
-﻿using AiPromptOptimizer.Application.DTOs.Prompt;
+﻿using AiPromptOptimizer.Application.DTOs;
 using AiPromptOptimizer.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ public class PromptController : ControllerBase
     }
 
     [HttpPost("improve")]
-    public async Task<IActionResult> ImprovePrompt([FromBody] PromptRequest request)
+    public async Task<IActionResult> ImprovePrompt([FromBody] ChatRequest request)
     {
         var response = await _promptService.GetImprovedPromptAsync(request);
         return Ok(response);

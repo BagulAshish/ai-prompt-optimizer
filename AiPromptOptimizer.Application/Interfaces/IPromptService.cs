@@ -1,8 +1,8 @@
-﻿using AiPromptOptimizer.Application.DTOs.Prompt;
+﻿using AiPromptOptimizer.Application.DTOs;
 
 namespace AiPromptOptimizer.Application.Interfaces;
 
 public interface IPromptService
 {
-    Task<PromptResponse> GetImprovedPromptAsync(PromptRequest request);
+    Task<ChatResponse> GetImprovedPromptAsync(ChatRequest request);
 }

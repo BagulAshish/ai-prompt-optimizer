@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using AiPromptOptimizer.Application.DTOs.Prompt;
+using AiPromptOptimizer.Application.DTOs;
 using AiPromptOptimizer.Application.Interfaces;
 using AiPromptOptimizer.Infrastructure.Interfaces;
 
@@ -17,14 +17,17 @@ public class PromptService : IPromptService
         _promptBuilderService = promptBuilderService;
     }
 
-    public async Task<PromptResponse> GetImprovedPromptAsync(PromptRequest request)
+    public async Task<ChatResponse> GetImprovedPromptAsync(ChatRequest request)
     {
-        var finalPrompt = _promptBuilderService.BuildPrompt(request);
+        var finalPrompt = request.Messages.Count == 1
+            ? _promptBuilderService.BuildInitialPrompt(request)
+            : _promptBuilderService.BuildRefinementPrompt(request);
+
         var improvedPrompt = await _aiInfrastructureService.GenerateAsync(finalPrompt);
 
         try
         {
-            var parsedResponse = JsonSerializer.Deserialize<PromptResponse>(improvedPrompt);
+            var parsedResponse = JsonSerializer.Deserialize<ChatResponse>(improvedPrompt);
 
             if (parsedResponse != null)
             {
@@ -36,7 +39,7 @@ public class PromptService : IPromptService
             Console.WriteLine(e);
         }
 
-        return new PromptResponse()
+        return new ChatResponse()
         {
             ImprovedPrompt = improvedPrompt,
             Issues = new(),
