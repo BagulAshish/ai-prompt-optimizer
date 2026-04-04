@@ -1,4 +1,5 @@
-﻿using AiPromptOptimizer.Application.DTOs.Prompt;
+﻿using System.Text.Json;
+using AiPromptOptimizer.Application.DTOs.Prompt;
 using AiPromptOptimizer.Application.Interfaces;
 using AiPromptOptimizer.Infrastructure.Interfaces;
 
@@ -20,9 +21,26 @@ public class PromptService : IPromptService
     {
         var finalPrompt = _promptBuilderService.BuildPrompt(request);
         var improvedPrompt = await _aiInfrastructureService.GenerateAsync(finalPrompt);
-        return new PromptResponse
+
+        try
         {
-            ImprovedPrompt = improvedPrompt
+            var parsedResponse = JsonSerializer.Deserialize<PromptResponse>(improvedPrompt);
+
+            if (parsedResponse != null)
+            {
+                return parsedResponse;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        return new PromptResponse()
+        {
+            ImprovedPrompt = improvedPrompt,
+            Issues = new(),
+            Suggestions = new()
         };
     }
 }

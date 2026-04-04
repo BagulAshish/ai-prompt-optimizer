@@ -21,7 +21,12 @@ public class PromptBuilderService : IPromptBuilderService
                 Prompt:
                 {request.UserPrompt}
 
-                Return only the improved prompt.
+                Return response STRICTLY in JSON format:
+                {{
+                    ""ImprovedPrompt"": ""..."",
+                    ""Issues"": [""...""],
+                    ""Suggestions"": [""...""]
+                }}
                 ",
 
             PromptCategory.Writing => $@"
@@ -35,7 +40,12 @@ public class PromptBuilderService : IPromptBuilderService
                 Prompt:
                 {request.UserPrompt}
 
-                Return only the improved prompt.
+                Return response STRICTLY in JSON format:
+                {{
+                    ""ImprovedPrompt"": ""..."",
+                    ""Issues"": [""...""],
+                    ""Suggestions"": [""...""]
+                }}
                 ",
 
             PromptCategory.Study => $@"
@@ -49,7 +59,12 @@ public class PromptBuilderService : IPromptBuilderService
                 Prompt:
                 {request.UserPrompt}
 
-                Return only the improved prompt.
+                Return response STRICTLY in JSON format:
+                {{
+                    ""ImprovedPrompt"": ""..."",
+                    ""Issues"": [""...""],
+                    ""Suggestions"": [""...""]
+                }}
                 ",
 
             PromptCategory.Career => $@"
@@ -63,7 +78,12 @@ public class PromptBuilderService : IPromptBuilderService
                 Prompt:
                 {request.UserPrompt}
 
-                Return only the improved prompt.
+                Return response STRICTLY in JSON format:
+                {{
+                    ""ImprovedPrompt"": ""..."",
+                    ""Issues"": [""...""],
+                    ""Suggestions"": [""...""]
+                }}
                 ",
 
             PromptCategory.Ideas => $@"
@@ -77,7 +97,12 @@ public class PromptBuilderService : IPromptBuilderService
                 Prompt:
                 {request.UserPrompt}
 
-                Return only the improved prompt.
+                Return response STRICTLY in JSON format:
+                {{
+                    ""ImprovedPrompt"": ""..."",
+                    ""Issues"": [""...""],
+                    ""Suggestions"": [""...""]
+                }}
                 ",
 
             _ => request.UserPrompt
