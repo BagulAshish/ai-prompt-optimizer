@@ -1,4 +1,4 @@
-﻿using AiPromptOptimizer.Application.Enums;
+﻿using AiPromptOptimizer.Domain.Enums;
 
 namespace AiPromptOptimizer.Application.DTOs;
 

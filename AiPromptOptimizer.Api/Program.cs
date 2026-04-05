@@ -1,7 +1,9 @@
 using AiPromptOptimizer.Application.Interfaces;
 using AiPromptOptimizer.Application.Services;
 using AiPromptOptimizer.Infrastructure.Interfaces;
+using AiPromptOptimizer.Infrastructure.Persistence;
 using AiPromptOptimizer.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IPromptService, PromptService>();
 builder.Services.AddScoped<IPromptBuilderService, PromptBuilderService>();
 builder.Services.AddScoped<IAiInfrastructureService, AiInfrastructureService>();
+
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 

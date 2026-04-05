@@ -1,6 +1,6 @@
 ﻿using AiPromptOptimizer.Application.DTOs;
-using AiPromptOptimizer.Application.Enums;
 using AiPromptOptimizer.Application.Interfaces;
+using AiPromptOptimizer.Domain.Enums;
 
 namespace AiPromptOptimizer.Application.Services;
 

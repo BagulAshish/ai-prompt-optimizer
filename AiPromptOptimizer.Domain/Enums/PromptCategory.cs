@@ -1,4 +1,4 @@
-﻿namespace AiPromptOptimizer.Application.Enums;
+﻿namespace AiPromptOptimizer.Domain.Enums;
 
 public enum PromptCategory
 {
