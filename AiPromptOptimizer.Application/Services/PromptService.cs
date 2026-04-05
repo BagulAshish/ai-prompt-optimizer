@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using AiPromptOptimizer.Application.DTOs;
 using AiPromptOptimizer.Application.Interfaces;
-using AiPromptOptimizer.Infrastructure.Interfaces;
 
 namespace AiPromptOptimizer.Application.Services;
 

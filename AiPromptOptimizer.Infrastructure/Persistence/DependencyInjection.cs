@@ -1,5 +1,5 @@
-﻿using AiPromptOptimizer.Domain.Entities;
-using AiPromptOptimizer.Infrastructure.Interfaces;
+﻿using AiPromptOptimizer.Application.Interfaces;
+using AiPromptOptimizer.Domain.Entities;
 using AiPromptOptimizer.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -8,6 +8,7 @@
   </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\AiPromptOptimizer.Application\AiPromptOptimizer.Application.csproj" />
       <ProjectReference Include="..\AiPromptOptimizer.Domain\AiPromptOptimizer.Domain.csproj" />
     </ItemGroup>
 

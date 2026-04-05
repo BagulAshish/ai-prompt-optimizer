@@ -1,4 +1,5 @@
-﻿using AiPromptOptimizer.Infrastructure.Interfaces;
+﻿using AiPromptOptimizer.Application.DTOs;
+using AiPromptOptimizer.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AiPromptOptimizer.Api.Controllers;
@@ -15,16 +16,16 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(string email, string password)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var token = await _authService.RegisterAsync(email, password);
-        return Ok(token);
+        var response = await _authService.RegisterAsync(request);
+        return Ok(response);
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(string email, string password)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var token = await _authService.LoginAsync(email, password);
-        return Ok(token);
+        var response = await _authService.LoginAsync(request);
+        return Ok(response);
     }
 }

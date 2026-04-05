@@ -1,8 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AiPromptOptimizer.Application.DTOs;
+using AiPromptOptimizer.Application.Interfaces;
 using AiPromptOptimizer.Domain.Entities;
-using AiPromptOptimizer.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -21,26 +22,46 @@ public class AuthService : IAuthService
         _config = config;
     }
 
-    public async Task<string> RegisterAsync(string email, string password)
+    public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
     {
-        var user = new User { UserName = email, Email = email };
+        var user = new User
+        {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            UserName = request.Email,
+            Email = request.Email
+        };
 
-        var result = await _userManager.CreateAsync(user, password);
+        var result = await _userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
             throw new Exception("Registration failed");
 
-        return GenerateJwtToken(user);
+        var token = GenerateJwtToken(user);
+
+        return new AuthResponse
+        {
+            Token = token,
+            Email = request.Email,
+            Password = request.Password
+        };
     }
 
-    public async Task<string> LoginAsync(string email, string password)
+    public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
-        if (user == null || !await _userManager.CheckPasswordAsync(user, password))
+        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
             throw new Exception("Invalid credentials");
 
-        return GenerateJwtToken(user);
+        var token = GenerateJwtToken(user);
+
+        return new AuthResponse
+        {
+            Token = token,
+            Email = request.Email,
+            Password = request.Password
+        };
     }
 
     private string GenerateJwtToken(User user)

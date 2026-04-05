@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AiPromptOptimizer.Domain\AiPromptOptimizer.Domain.csproj" />
-      <ProjectReference Include="..\AiPromptOptimizer.Infrastructure\AiPromptOptimizer.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

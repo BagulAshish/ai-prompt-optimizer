@@ -1,4 +1,4 @@
-﻿using AiPromptOptimizer.Infrastructure.Interfaces;
+﻿using AiPromptOptimizer.Application.Interfaces;
 using Google.GenAI;
 using Microsoft.Extensions.Configuration;
 

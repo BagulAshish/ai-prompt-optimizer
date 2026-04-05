@@ -1,4 +1,4 @@
-﻿namespace AiPromptOptimizer.Infrastructure.Interfaces;
+﻿namespace AiPromptOptimizer.Application.Interfaces;
 
 public interface IAiInfrastructureService
 {
