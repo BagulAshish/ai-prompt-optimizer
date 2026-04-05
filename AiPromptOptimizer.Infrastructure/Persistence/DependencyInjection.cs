@@ -1,5 +1,7 @@
-﻿using AiPromptOptimizer.Infrastructure.Interfaces;
+﻿using AiPromptOptimizer.Domain.Entities;
+using AiPromptOptimizer.Infrastructure.Interfaces;
 using AiPromptOptimizer.Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,12 @@ public static class DependencyInjection
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IAiInfrastructureService, AiInfrastructureService>();
+
+        services.AddScoped<IAuthService, AuthService>();
+
+        services.AddIdentity<User, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         return services;
     }

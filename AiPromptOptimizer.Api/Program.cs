@@ -1,9 +1,12 @@
+using System.Text;
 using AiPromptOptimizer.Application.Interfaces;
 using AiPromptOptimizer.Application.Services;
 using AiPromptOptimizer.Infrastructure.Interfaces;
 using AiPromptOptimizer.Infrastructure.Persistence;
 using AiPromptOptimizer.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,27 @@ builder.Services.AddScoped<IPromptBuilderService, PromptBuilderService>();
 builder.Services.AddScoped<IAiInfrastructureService, AiInfrastructureService>();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 var app = builder.Build();
 

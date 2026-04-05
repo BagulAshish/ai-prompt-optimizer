@@ -1,5 +1,6 @@
 ﻿using AiPromptOptimizer.Application.DTOs;
 using AiPromptOptimizer.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AiPromptOptimizer.Api.Controllers;
@@ -15,6 +16,7 @@ public class PromptController : ControllerBase
         _promptService = promptService;
     }
 
+    [Authorize]
     [HttpPost("improve")]
     public async Task<IActionResult> ImprovePrompt([FromBody] ChatRequest request)
     {

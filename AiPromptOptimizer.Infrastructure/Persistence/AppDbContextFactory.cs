@@ -13,6 +13,7 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         var configuration = new ConfigurationBuilder()
             .SetBasePath(basePath)
             .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Development.json", optional: true)
             .Build();
 
         var connectionString = configuration.GetConnectionString("DefaultConnection");
