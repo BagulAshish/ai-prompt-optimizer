@@ -1,0 +1,118 @@
+﻿@page "/Login"
+@using AiPromptOptimizer.Web.Models
+@using AiPromptOptimizer.Web.Services
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+<MudPaper Class="pa-6 mx-auto mt-12" Style="width: 400px">
+    <MudText Typo="Typo.h5" Class="mb-4">
+        Login
+    </MudText>
+
+    <MudTextField @bind-Value="_email"
+                  Label="Email"
+                  Variant="Variant.Outlined" 
+                  Required
+                  RequiredError="Email is required"/>
+
+    <MudTextField @bind-Value="_password"
+                  Label="Password"
+                  InputType="_passwordInput"
+                  Variant="Variant.Outlined"
+                  Class="mt-4"
+                  Adornment="Adornment.End"
+                  AdornmentIcon="@_passwordInputIcon" 
+                  OnAdornmentClick="TogglePasswordVisibility"
+                  Required
+                  RequiredError="Password is required"/>
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               FullWidth="true"
+               Class="mt-6"
+               OnClick="LoginAsync"
+               Disabled="_isLogging">
+        @if (_isLogging)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+            <MudText Class="ms-2">Logging in...</MudText>
+        }
+        else
+        {
+            <MudText>Login</MudText>
+        }
+    </MudButton>
+
+    <MudText Typo="Typo.body2" Class="mt-4">
+        Don't have an account?
+        <MudLink Href="/register">
+            Create one
+        </MudLink>
+    </MudText>
+
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="mt-4">
+            @_errorMessage
+        </MudAlert>
+    }
+
+</MudPaper>
+
+@code {
+    private string? _email;
+    private string? _password;
+
+    private bool _isShow;
+    private InputType _passwordInput = InputType.Password;
+    private string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+    private bool _isLogging;
+    private string? _errorMessage = string.Empty;
+
+    private async Task LoginAsync()
+    {
+        _isLogging = true;
+        if (string.IsNullOrEmpty(_email) || string.IsNullOrEmpty(_password))
+        {
+            return;
+        }
+
+        try
+        {
+            var result = await AuthService.LoginAsync(new LoginRequest()
+            {
+                Email = _email,
+                Password = _password
+            });
+
+            if (result != null)
+            {
+                Snackbar.Add("Login successful!", Severity.Success);
+                NavigationManager.NavigateTo("/chat");
+            }
+            else
+            {
+                SetErrorMessage("Invalid email or password.");
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isLogging = false;
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        _isShow = !_isShow;
+        _passwordInputIcon = _isShow ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+        _passwordInput = _isShow ? InputType.Text : InputType.Password;
+    }
+
+    private void SetErrorMessage(string message)
+        => _errorMessage = message;
+}

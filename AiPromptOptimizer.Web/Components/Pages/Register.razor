@@ -1,0 +1,191 @@
+﻿@page "/register"
+@using AiPromptOptimizer.Web.Models
+@using AiPromptOptimizer.Web.Services
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@using System.Text.RegularExpressions
+
+<MudPaper Class="pa-6 mx-auto mt-12" Style="width: 400px">
+    <MudText Typo="Typo.h5" Class="mb-4">
+        Create Account
+    </MudText>
+
+    <MudTextField @bind-Value="_firstName"
+                  Label="First Name"
+                  Variant="Variant.Outlined" 
+                  InputType="InputType.Text"
+                  Required />
+
+    <MudTextField @bind-Value="_lastName"
+                  Label="Last Name"
+                  Variant="Variant.Outlined" 
+                  InputType="InputType.Text"
+                  Required />
+
+    <MudTextField @bind-Value="_email"
+                  Label="Email"
+                  Variant="Variant.Outlined" 
+                  InputType="InputType.Email"
+                  Required />
+
+    <MudTextField @bind-Value="_password"
+                  Label="Password"
+                  Variant="Variant.Outlined"
+                  InputType="@(_showPassword ? InputType.Text : InputType.Password)"
+                  Adornment="Adornment.End"
+                  AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                  OnAdornmentClick="TogglePasswordVisibility"
+                  Validation="ValidatePassword"
+                  Immediate="true"
+                  Required="true"
+                  Class="mt-4" />
+
+    <MudTextField @bind-Value="_confirmPassword"
+                  Label="Confirm Password"
+                  Variant="Variant.Outlined"
+                  InputType="@(_showConfirmPassword ? InputType.Text : InputType.Password)"
+                  Adornment="Adornment.End"
+                  AdornmentIcon="@(_showConfirmPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                  OnAdornmentClick="ToggleConfirmPasswordVisibility"
+                  Validation="ValidateConfirmPassword"
+                  Immediate="true"
+                  Required="true"
+                  Class="mt-4" />
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               FullWidth="true"
+               Class="mt-6"
+               OnClick="RegisterAsync"
+               Disabled="_isLoading">
+        @if (_isLoading)
+        {
+            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+            <MudText Class="ms-2">Creating an account...</MudText>
+        }
+        else
+        {
+            <MudText>Register</MudText>
+        }
+    </MudButton>
+
+    @if (!_isLoading)
+    {
+        <MudText Typo="Typo.body2" Class="mt-4">
+            Already have an account?
+            <MudLink Href="/login">
+                Login
+            </MudLink>
+        </MudText>
+    }
+
+    @if (!string.IsNullOrEmpty(_errorMessage))
+    {
+        <MudAlert Severity="Severity.Error" Class="mt-4">
+            @_errorMessage
+        </MudAlert>
+    }
+
+</MudPaper>
+
+@code {
+    private string _firstName = string.Empty;
+    private string _lastName = string.Empty;
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _confirmPassword = string.Empty;
+
+    private bool _showPassword;
+    private bool _showConfirmPassword;
+
+    private bool _isLoading;
+
+    private string? _errorMessage;
+
+    private async Task RegisterAsync()
+    {
+        _errorMessage = null;
+
+        if (_password != _confirmPassword)
+        {
+            _errorMessage = "Passwords do not match.";
+            return;
+        }
+
+        try
+        {
+            _isLoading = true;
+
+            var result = await AuthService.RegisterAsync(new RegisterRequest
+            {
+                FirstName = _firstName,
+                LastName = _lastName,
+                Email = _email,
+                Password = _password,
+                ConfirmPassword = _confirmPassword
+            });
+
+            if (result)
+            {
+                Snackbar.Add("Registration successful!", Severity.Success);
+
+                NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                _errorMessage = "Registration failed.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        _showPassword = !_showPassword;
+    }
+
+    private void ToggleConfirmPasswordVisibility()
+    {
+        _showConfirmPassword = !_showConfirmPassword;
+    }
+
+    private IEnumerable<string> ValidatePassword(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            yield return "Password is required.";
+            yield break;
+        }
+
+        if (password.Length < 8)
+            yield return "Password must be at least 8 characters long.";
+
+        if (!Regex.IsMatch(password, "[A-Z]"))
+            yield return "Password must contain at least one uppercase letter.";
+
+        if (!Regex.IsMatch(password, "[a-z]"))
+            yield return "Password must contain at least one lowercase letter.";
+
+        if (!Regex.IsMatch(password, "[0-9]"))
+            yield return "Password must contain at least one number.";
+
+        if (!Regex.IsMatch(password, "[^a-zA-Z0-9]"))
+            yield return "Password must contain at least one special character.";
+    }
+
+    private string? ValidateConfirmPassword(string confirmPassword)
+    {
+        if (confirmPassword != _password)
+            return "Passwords do not match.";
+
+        return null;
+    }
+}
