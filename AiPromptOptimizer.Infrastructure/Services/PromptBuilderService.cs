@@ -2,7 +2,7 @@
 using AiPromptOptimizer.Application.Interfaces;
 using AiPromptOptimizer.Domain.Enums;
 
-namespace AiPromptOptimizer.Application.Services;
+namespace AiPromptOptimizer.Infrastructure.Services;
 
 public class PromptBuilderService : IPromptBuilderService
 {

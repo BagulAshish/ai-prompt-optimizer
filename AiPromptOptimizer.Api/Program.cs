@@ -1,6 +1,5 @@
 using System.Text;
 using AiPromptOptimizer.Application.Interfaces;
-using AiPromptOptimizer.Application.Services;
 using AiPromptOptimizer.Infrastructure.Persistence;
 using AiPromptOptimizer.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

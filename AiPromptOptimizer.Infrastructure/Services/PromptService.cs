@@ -2,7 +2,7 @@
 using AiPromptOptimizer.Application.DTOs;
 using AiPromptOptimizer.Application.Interfaces;
 
-namespace AiPromptOptimizer.Application.Services;
+namespace AiPromptOptimizer.Infrastructure.Services;
 
 public class PromptService : IPromptService
 {
