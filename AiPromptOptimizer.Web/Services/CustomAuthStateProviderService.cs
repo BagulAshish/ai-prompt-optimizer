@@ -16,13 +16,19 @@ public class CustomAuthStateProviderService : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
+        Console.WriteLine("GetAuthenticationStateAsync called");
         var token = await _localStorage.GetItemAsync<string>("authToken");
+        Console.WriteLine($"Token: {token}");
 
         if (string.IsNullOrWhiteSpace(token))
         {
+            Console.WriteLine("Token missing");
+
             return new AuthenticationState(
                 new ClaimsPrincipal(new ClaimsIdentity()));
         }
+
+        Console.WriteLine("User authenticated");
 
         var claims = ParseClaimsFromJwt(token);
 

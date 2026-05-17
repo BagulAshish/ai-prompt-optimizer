@@ -6,6 +6,11 @@
 
         <AuthorizeRouteView RouteData="@routeData"
                             DefaultLayout="@typeof(Layout.MainLayout)">
+
+            <Authorizing>
+                <MudProgressCircular Indeterminate="true" />
+            </Authorizing>
+
             <NotAuthorized>
                 <MudText Typo="Typo.h6">
                     You are not authorized.

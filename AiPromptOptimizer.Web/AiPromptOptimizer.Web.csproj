@@ -12,4 +12,11 @@
       <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\Chat.razor" />
+      <AdditionalFiles Include="Pages\Home.razor" />
+      <AdditionalFiles Include="Pages\Login.razor" />
+      <AdditionalFiles Include="Pages\Register.razor" />
+    </ItemGroup>
+
 </Project>

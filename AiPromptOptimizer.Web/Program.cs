@@ -35,8 +35,11 @@ builder.Services
     });
 
 builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<AuthenticationStateProvider,
-    CustomAuthStateProviderService>();
+
+builder.Services.AddScoped<CustomAuthStateProviderService>();
+
+builder.Services.AddScoped<AuthenticationStateProvider>(
+    provider => provider.GetRequiredService<CustomAuthStateProviderService>());
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<TokenService>();
