@@ -1,5 +1,8 @@
 using AiPromptOptimizer.Web.Components;
 using AiPromptOptimizer.Web.Services;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddMudServices();
+
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped(sp =>
 {
@@ -22,7 +27,19 @@ builder.Services.AddScoped(sp =>
     };
 });
 
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/login";
+    });
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider,
+    CustomAuthStateProviderService>();
+
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<TokenService>();
 
 var app = builder.Build();
 
@@ -35,6 +52,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseAntiforgery();
 

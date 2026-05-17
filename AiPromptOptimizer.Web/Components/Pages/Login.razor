@@ -1,7 +1,10 @@
 ﻿@page "/Login"
 @using AiPromptOptimizer.Web.Models
 @using AiPromptOptimizer.Web.Services
+@using Microsoft.AspNetCore.Components.Authorization
 @inject AuthService AuthService
+@inject TokenService TokenService
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
@@ -89,6 +92,9 @@
             if (result != null)
             {
                 Snackbar.Add("Login successful!", Severity.Success);
+                await TokenService.SetTokenAsync(result.Token);
+                ((CustomAuthStateProviderService)AuthenticationStateProvider)
+                    .NotifyUserAuthentication(result.Token);
                 NavigationManager.NavigateTo("/chat");
             }
             else

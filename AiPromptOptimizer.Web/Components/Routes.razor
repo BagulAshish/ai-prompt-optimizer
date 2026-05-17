@@ -1,6 +1,18 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<Router AppAssembly="@typeof(Program).Assembly"
+        @rendermode="new InteractiveServerRenderMode(prerender: false)">
+
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)"/>
-        <FocusOnNavigate RouteData="routeData" Selector="h1"/>
+
+        <AuthorizeRouteView RouteData="@routeData"
+                            DefaultLayout="@typeof(Layout.MainLayout)">
+            <NotAuthorized>
+                <MudText Typo="Typo.h6">
+                    You are not authorized.
+                </MudText>
+            </NotAuthorized>
+        </AuthorizeRouteView>
+
     </Found>
+
 </Router>
