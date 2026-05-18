@@ -1,0 +1,24 @@
+﻿<MudDrawerContainer Class="h-100">
+    <MudDrawer @bind-Open="@_open" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" Breakpoint="Breakpoint.None" Color="Color.Dark">
+        <MudDrawerHeader>
+            <MudStack Row>
+                <MudFab StartIcon="@Icons.Material.Filled.Dehaze" OnClick="ToggleDrawer"/>
+                <MudFab StartIcon="@Icons.Material.Filled.Search"/>
+            </MudStack>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.EditNote" IconColor="Color.Primary">New chat</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Favorite" IconColor="Color.Primary">Liked chats</MudNavLink>
+        </MudNavMenu>
+        <MudText>Recent chats</MudText>
+    </MudDrawer>
+</MudDrawerContainer>
+
+@code {
+    private bool _open = true;
+
+    private void ToggleDrawer()
+    {
+        _open = !_open;
+    }
+}
